@@ -37,7 +37,8 @@ class DataBase{
         $stn = $this->_db->query($sql);
 
         $result = $stn->fetch(PDO::FETCH_OBJ);
-        if($result->pass == $pass){
+        $hash = (string) $result->pass;
+        if(password_verify($pass, $hash)){
             return true;
         }
         else{

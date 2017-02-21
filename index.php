@@ -12,12 +12,12 @@ if(isset($_GET['id'])){
 
 if($_SERVER['REQUEST_METHOD'] == "POST"){
     if($id == ''){
-        if(isset($_POST['login']) && isset($_POST['pass'])){
+        if(!empty($_POST['login']) && !empty($_POST['pass'])){
             $login = clearData($_POST['login']);
             $pass = clearData($_POST['pass']);
             if($db->isTrueUser($login, $pass)){
                 $isAuthorised = true;
-                header("Location: " . $_SERVER['PHP_SELF']);
+                //header("Location: " . $_SERVER['PHP_SELF']);
             }else{
                 echo "Не совпадает логин или пароль";
             }         
@@ -47,6 +47,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         </header>
         <div id="content">
             <?php
+            if($isAuthorised)
+                echo 'Пользователь авторизован!!';
+            
             switch($id){
                 case 'page1': require 'templates/page1.php';break;
                 case 'page2': require 'templates/page2.php';break;
