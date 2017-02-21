@@ -22,9 +22,9 @@ class DataBase{
         return $this->_db->query($sql);
     }
     
-    function insertUser($login, $pass, $email, $session){
-        $sql = "INSERT INTO users(login, pass, email, session)"
-                . "VALUES('$login', '$pass', '$email', '$session')";
+    function insertUser($login, $pass, $email){
+        $sql = "INSERT INTO users(login, pass, email)"
+                . "VALUES('$login', '$pass', '$email')";
         $res = $this->_db->exec($sql);
         if(!$res){
             return false;

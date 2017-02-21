@@ -12,10 +12,10 @@ if (empty($login) || empty($pass) || empty($pass2) || empty($email)) {
     if ($pass != $pass2) {
         $isPassNotEqual = true;
     } else {
-        $res = $db->insertUser($login, password_hash($pass, PASSWORD_DEFAULT),
-                $email, "fsfsfaaa");
+        $res = $db->insertUser($login, 
+                password_hash($pass, PASSWORD_DEFAULT), $email);
         if (!$res) {
-            print_r($db->sqlError());
+            //print_r($db->sqlError());
         } else {
             echo "Пользователь успешно создан!";
         }

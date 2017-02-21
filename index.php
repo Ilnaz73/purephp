@@ -3,6 +3,7 @@ if(isset($_COOKIE['session'])){
     session_id($_COOKIE['session']);
 }
 session_start();
+
 require_once 'includes/functions.php';
 require_once 'classes/DataBase.php';
 
@@ -25,7 +26,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                 if(isset($_POST['remember'])){
                     setcookie("session", session_id(), time() + 3600);
                 }else{
-                    setcookie("session", '', time() + 3600);
+                    setcookie("session", '', time() + 60);
                 }
                 
                 header("Location: " . $_SERVER['PHP_SELF']);
@@ -64,7 +65,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                 <a href="index.php?id=page2">Страница 2</a>  
                 <?php 
                 if($isAuthorized)
-                    echo '<a href="index.php?id=close">Выйти</a>'
+                    echo '<a href="index.php?id=close">Выйти</a>';
                 ?>
            </div>
         </header>
