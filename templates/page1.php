@@ -1,1 +1,1 @@
-<h3>This is page1</h3>
+<div class="info-block">Этот текст видят все</div>

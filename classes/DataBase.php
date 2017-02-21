@@ -5,7 +5,7 @@ class DataBase{
     const DB_PASSWORD = "rootsqladm";
     const DB_NAME = "purephp";
     protected $_db;
-    function __construct() {
+            function __construct() {
         $sdn = "mysql:host=" . self::DB_HOST . ";dbname=" . self::DB_NAME;
         $this->_db = new PDO($sdn, self::DB_LOGIN, self::DB_PASSWORD);  
     }
@@ -37,13 +37,13 @@ class DataBase{
         $stn = $this->_db->query($sql);
 
         $result = $stn->fetch(PDO::FETCH_OBJ);
-        $hash = (string) $result->pass;
-        if(password_verify($pass, $hash)){
-            return true;
+        if(!empty($result)){
+            $hash = (string) $result->pass;
+            if(password_verify($pass, $hash)){
+                return true;
+            }
         }
-        else{
-            return false;
-        }
+        return false;
     }
     
     function sqlError(){
