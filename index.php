@@ -1,42 +1,44 @@
 <?php
-if (isset($_COOKIE['session'])) {
-    session_id($_COOKIE['session']);
+require_once 'classes/DataBase.php';//Класс базы данных
+require_once 'includes/functions.php';//Функции
+
+if (isset($_COOKIE['session'])) {//Проверяем есть ли в куках данные о сессии
+    session_id($_COOKIE['session']);//Если есть записываем их
 }
 session_start();
 
-require_once 'includes/functions.php';
-require_once 'classes/DataBase.php';
 
-$db = new DataBase();
+$db = new \Ilnaz\DataBase;
 $isAuthorized = isset($_SESSION['isAuthorized']) && $_SESSION['isAuthorized'];
-
 $id = '';
+
 if (isset($_GET['id'])) {
     $id = clearData($_GET['id']);
 }
 
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
+if ($_SERVER['REQUEST_METHOD'] == "POST") {//Если данные отправились постом
     if ($id == '') {
         if (!empty($_POST['login']) && !empty($_POST['pass'])) {
             $login = clearData($_POST['login']);
             $pass = clearData($_POST['pass']);
-            if ($db->isTrueUser($login, $pass)) {
+            if ($db->isTrueUser($login, $pass)) {//Проверка логина и пароля в БД
                 $_SESSION['isAuthorized'] = true;
                 $_SESSION['userName'] = $login;
-                if (isset($_POST['remember'])) {
-                    setcookie("session", session_id(), time() + 3600);
+                
+                if (isset($_POST['remember'])) {//Если была выбрана кнопка "Запомнить меня"
+                    setcookie("session", session_id(), time() + 3600);//Устанавливаем куки
                 } else {
-                    setcookie("session", '', time() + 60);
+                    setcookie("session", '', time() + 60);//Если нет присваиваем пустые
                 }
-
+                
                 header("Location: " . $_SERVER['PHP_SELF']);
             } else {
                 echo "Не совпадает логин или пароль";
             }
         } else {
-            
+            echo "Заполните поля формы";
         }
-    } elseif ($id == "registry") {
+    } elseif ($id == "registry") {//Если в методе get также выбрана регистрация
         require 'templates/registry.php';
     }
 }
@@ -52,8 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         <header>
             <div id="header-text">Привет 
                 <?php
-                if ($isAuthorized) {
-                    echo $_SESSION['userName'];
+                if ($isAuthorized) {//Если юзер авторизован
+                    echo $_SESSION['userName'];//Добавляем его ник
                 } else {
                     echo "гость";
                 }
@@ -64,25 +66,30 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 <a href='index.php?id=page1'>Страница 1</a>
                 <a href="index.php?id=page2">Страница 2</a>  
                 <?php
-                if ($isAuthorized)
-                    echo '<a href="index.php?id=close">Выйти</a>';
+                if ($isAuthorized)//Если юзер авторизован
+                    echo '<a href="index.php?id=close">Выйти</a>';// Добаляем кнопку выйти
                 ?>
             </div>
         </header>
         <div id="content">
             <?php
-            switch ($id) {
-                case 'page1': require 'templates/page1.php';
+            switch ($id) {//Выбираем нужный шаблон по параметру id из get
+                case 'page1': 
+                    require 'templates/page1.php';
                     break;
-                case 'page2': require 'templates/page2.php';
+                case 'page2': 
+                    require 'templates/page2.php';
                     break;
-                case 'registry': require 'templates/regForm.php';
+                case 'registry': 
+                    require 'templates/regForm.php';
                     break;
-                case 'close':
-                    session_destroy();
-                    header("Location: " . $_SERVER['PHP_SELF']);
+                case 'close'://Если был передан параметр close
+                    session_destroy();//Закрываем сессию
+                    header("Location: " . $_SERVER['PHP_SELF']);//И отправляем на главную
                     break;
-                default: require 'templates/main.php';
+                default: 
+                    require 'templates/main.php';//По стандарту направляем на главную страницу
+                    break;
             }
             ?>
         </div>

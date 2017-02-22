@@ -1,4 +1,5 @@
 <?php
-function clearData($data){
+
+function clearData($data) {
     return trim(strip_tags($data));
 }
