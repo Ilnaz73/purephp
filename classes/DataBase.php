@@ -33,9 +33,15 @@ class DataBase
 
     public function insertUser($login, $pass, $email) 
     {
+        $hash = password_hash($pass, PASSWORD_DEFAULT);
         $sql = "INSERT INTO users(login, pass, email)"
-                . "VALUES('$login', '$pass', '$email')";
-        $res = $this->_db->exec($sql);
+                . "VALUES(:login , :hash, :email)";
+        $stm = $this->_db->prepare($sql);
+        $stm->bindParam(':login', $login);
+        $stm->bindParam(':hash', $hash);
+        $stm->bindParam(':email', $email);
+        $res = $stm->execute();
+
         if (!$res) {
             return false;
         }
@@ -44,11 +50,13 @@ class DataBase
 
     public function isTrueUser($login, $pass) 
     {
-        $sql = "SELECT pass FROM users WHERE login='$login'";
-        $stn = $this->_db->query($sql);
-
-        $result = $stn->fetch(\PDO::FETCH_OBJ);
-        if (!empty($result)) {
+        $sql = "SELECT pass FROM users WHERE login=:login";
+        $stm = $this->_db->prepare($sql);
+        $stm->bindParam(':login', $login);
+        $stm->execute();
+        
+        $result = $stm->fetch(\PDO::FETCH_OBJ);
+        if (!empty($result)) {         
             $hash = (string) $result->pass;
             if (password_verify($pass, $hash)) {
                 return true;

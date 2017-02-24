@@ -1,6 +1,6 @@
 <div>
     <h3>Форма регистрации</h3>
-    <form method="POST" action="index.php?id=registry">
+    <form method="POST" action="/index.php/registry">
         <table>
             <tr>
                 <td>Логин</td>

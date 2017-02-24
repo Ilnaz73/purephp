@@ -2,7 +2,7 @@
     <div class="info-block">Поздравляем! Вы вошли!</div>
 <?php else: ?>
     <h3>Форма авторизации</h3>
-    <form method="POST" action="index.php">
+    <form method="POST" action="/index.php">
         <table>
             <tr>
                 <td>Логин</td>
@@ -22,7 +22,7 @@
             </tr>
             <tr>
                 <td></td>
-                <td><a href="index.php?id=registry">У вас нет аккаунта?</a></td>
+                <td><a href="/index.php/registry">У вас нет аккаунта?</a></td>
             </tr>
         </table> 
     </form>

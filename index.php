@@ -1,6 +1,5 @@
 <?php
 require_once 'classes/DataBase.php';//Класс базы данных
-require_once 'includes/functions.php';//Функции
 
 if (isset($_COOKIE['session'])) {//Проверяем есть ли в куках данные о сессии
     session_id($_COOKIE['session']);//Если есть записываем их
@@ -13,14 +12,14 @@ $isAuthorized = isset($_SESSION['isAuthorized']) && $_SESSION['isAuthorized'];
 $id = '';
 
 if (isset($_GET['id'])) {
-    $id = clearData($_GET['id']);
+    $id = filter_var($_GET['id'], FILTER_SANITIZE_STRING);
 }
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {//Если данные отправились постом
     if ($id == '') {
         if (!empty($_POST['login']) && !empty($_POST['pass'])) {
-            $login = clearData($_POST['login']);
-            $pass = clearData($_POST['pass']);
+            $login = filter_var($_POST['login'], FILTER_SANITIZE_STRING);
+            $pass = filter_var($_POST['pass'], FILTER_SANITIZE_STRING);
             if ($db->isTrueUser($login, $pass)) {//Проверка логина и пароля в БД
                 $_SESSION['isAuthorized'] = true;
                 $_SESSION['userName'] = $login;
@@ -48,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {//Если данные отправ�
     <head>
         <title>Тестовый сайт</title>
         <meta charset="utf-8">
-        <link href="styles/style.css" rel="stylesheet">
+        <link href="/styles/style.css" rel="stylesheet">
     </head>
     <body>
         <header>
@@ -62,12 +61,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {//Если данные отправ�
                 ?>
             </div>
             <div id="wrap">
-                <a href="index.php">Главная</a>
-                <a href='index.php?id=page1'>Страница 1</a>
-                <a href="index.php?id=page2">Страница 2</a>  
+                <a href="/index.php">Главная</a>
+                <a href='/index.php/page1'>Страница 1</a>
+                <a href="/index.php/page2">Страница 2</a>  
                 <?php
                 if ($isAuthorized)//Если юзер авторизован
-                    echo '<a href="index.php?id=close">Выйти</a>';// Добаляем кнопку выйти
+                    echo '<a href="/index.php?id=close">Выйти</a>';// Добаляем кнопку выйти
                 ?>
             </div>
         </header>
