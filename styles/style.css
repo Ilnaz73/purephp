@@ -1,21 +1,23 @@
-header{
+div .container{
     width: 100%;
+}
+
+header{
     height: 50px;
     border-bottom: 1px solid #66ccff;
-    /*padding: 10px 0;*/
 }
 
 h3{
     margin-left: 80px;
 }
 
-#wrap{
+nav{
     height: 50px;
     float: right;
     display: flex;
 }
 
-#wrap a{
+nav a{
     text-align: center;
     line-height: 50px;
     display: block;
@@ -25,7 +27,7 @@ h3{
     padding: 0 10px;
 }
 
-#wrap a:hover{
+nav a:hover{
     background-color: #cccccc;
 }
 
@@ -34,9 +36,8 @@ h3{
     line-height: 50px;
 }
 
-#content{
-    width: 100%;
-    min-height: 500px;
+article{
+    min-height: 400px;
     height: 650px;
     padding: 20px 40px;
     margin: 0 auto;
@@ -62,7 +63,6 @@ div .error-block{
 
 footer{
     clear: both;
-    width: 100%;
     height: 100px;
     background-color: #0099ff;
     color: white;
